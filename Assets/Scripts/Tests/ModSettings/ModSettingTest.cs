@@ -8,7 +8,7 @@ namespace Tests.ModSettings {
     [Test]
     public void ShouldSetValue() {
       // given
-      var modSetting = new ModSetting<int>("test", 0);
+      var modSetting = new ModSetting<int>(0, ModSettingDescriptor.Create("test"));
 
       // when
       modSetting.SetValue(1);
@@ -20,7 +20,7 @@ namespace Tests.ModSettings {
     [Test]
     public void ShouldInvokeValueChangedEvent() {
       // given
-      var modSetting = new ModSetting<int>("test", 0);
+      var modSetting = new ModSetting<int>(0, ModSettingDescriptor.Create("test"));
       var invoked = false;
       modSetting.ValueChanged += (_, _) => invoked = true;
 
@@ -34,7 +34,7 @@ namespace Tests.ModSettings {
     [Test]
     public void ShouldNotInvokeValueChangedEvent() {
       // given
-      var modSetting = new ModSetting<int>("test", 0);
+      var modSetting = new ModSetting<int>(0, ModSettingDescriptor.Create("test"));
       var invoked = false;
       modSetting.ValueChanged += (_, _) => invoked = true;
 
@@ -48,8 +48,8 @@ namespace Tests.ModSettings {
     [Test]
     public void ShouldRangeIntModSettingClampValue() {
       // given
-      var lowModSetting = new RangeIntModSetting("low", 0, 1, 10);
-      var highModSetting = new RangeIntModSetting("high", 0, 1, 10);
+      var lowModSetting = new RangeIntModSetting(0, 1, 10, ModSettingDescriptor.Create("test"));
+      var highModSetting = new RangeIntModSetting(0, 1, 10, ModSettingDescriptor.Create("test"));
 
       // when
       lowModSetting.SetValue(0);
@@ -68,7 +68,7 @@ namespace Tests.ModSettings {
         new LimitedStringModSettingValue("b", ""),
         new LimitedStringModSettingValue("c", "")
       };
-      var modSetting = new LimitedStringModSetting("test", 0, values);
+      var modSetting = new LimitedStringModSetting(0, values, ModSettingDescriptor.Create("test"));
 
       // then
       Assert.That(() => modSetting.SetValue("d"), Throws.ArgumentException);
@@ -82,7 +82,7 @@ namespace Tests.ModSettings {
         new LimitedStringModSettingValue("b", ""),
         new LimitedStringModSettingValue("c", "")
       };
-      var modSetting = new LimitedStringModSetting("test", 0, values);
+      var modSetting = new LimitedStringModSetting(0, values, ModSettingDescriptor.Create("test"));
 
       // when
       modSetting.SetValue("b");

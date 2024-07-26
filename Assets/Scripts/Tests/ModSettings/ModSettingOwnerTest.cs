@@ -192,7 +192,7 @@ namespace Tests.ModSettings {
       var modSettingOwnerRegistry = new ModSettingsOwnerRegistry();
       var modSettingOwner = new ModSettingOwnerMock(new SettingsMock(), modSettingOwnerRegistry,
                                                     modRepository);
-      var customModSetting = new ModSetting<int>("custom", 20);
+      var customModSetting = new ModSetting<int>(20, ModSettingDescriptor.Create("custom"));
       Assert.AreEqual(0, customModSetting.Value);
 
       // when
@@ -213,7 +213,7 @@ namespace Tests.ModSettings {
       var modSettingOwner = new NoSettingsModSettingOwner(new SettingsMock(),
                                                           modSettingOwnerRegistry,
                                                           modRepository);
-      var customModSetting = new ModSetting<int>("custom", 20);
+      var customModSetting = new ModSetting<int>(20, ModSettingDescriptor.Create("custom"));
 
       // when
       modSettingOwner.Load();
@@ -245,7 +245,7 @@ namespace Tests.ModSettings {
       // given
       var modRepository = CreateModRepository(new[] { CreateMod("modMock") });
       var modSettingOwner = new ModSettingOwnerMock(new FilledSettingsMock(), new(), modRepository);
-      var invalidModSetting = new InvalidModSetting("invalid", 0);
+      var invalidModSetting = new InvalidModSetting(0, ModSettingDescriptor.Create("invalid"));
 
       // when
       modSettingOwner.Load();
@@ -263,7 +263,8 @@ namespace Tests.ModSettings {
       var modSettingOwner = new NoSettingsModSettingOwner(settings, new(), modRepository);
       var limitedStringModSettingValue = new LimitedStringModSettingValue("default", "default");
       var limitedStringModSetting =
-          new LimitedStringModSetting("default", 0, new[] { limitedStringModSettingValue });
+          new LimitedStringModSetting(0, new[] { limitedStringModSettingValue },
+                                      ModSettingDescriptor.Create("default"));
       var key = "ModSetting.modMock.limitedString";
 
       // when
@@ -303,28 +304,29 @@ namespace Tests.ModSettings {
     private class ModSettingOwnerMock : ModSettingsOwner {
 
       public ModSetting<int> SmallIntRangeSetting { get; } = new RangeIntModSetting(
-          "eMka.ModSettingsExamples.SmallIntRange", 5, 0, 10);
+          5, 0, 10, ModSettingDescriptor.Create("eMka.ModSettingsExamples.SmallIntRange"));
 
       public ModSetting<int> NegativeRangeSetting { get; } = new RangeIntModSetting(
-          "eMka.ModSettingsExamples.BigIntRange", -50, -100, 100);
+          -50, -100, 100, ModSettingDescriptor.Create("eMka.ModSettingsExamples.BigIntRange"));
 
       public ModSetting<string> DropdownSetting { get; } = new LimitedStringModSetting(
-          "eMka.ModSettingsExamples.Dropdown", 1, new[] {
+          1, new[] {
               new LimitedStringModSettingValue("value1", "eMka.ModSettingsExamples.Dropdown1"),
               new LimitedStringModSettingValue("value2", "eMka.ModSettingsExamples.Dropdown2"),
               new LimitedStringModSettingValue("value3", "eMka.ModSettingsExamples.Dropdown3")
-          });
+          }, ModSettingDescriptor.Create("eMka.ModSettingsExamples.Dropdown"));
 
-      public ModSetting<int> IntSetting { get; } = new("eMka.ModSettingsExamples.IntSetting", 2);
+      public ModSetting<int> IntSetting { get; } =
+        new(2, ModSettingDescriptor.Create("eMka.ModSettingsExamples.IntSetting"));
 
       public ModSetting<float> FloatSetting { get; } =
-        new("eMka.ModSettingsExamples.FloatSetting", 1.1f);
+        new(1.1f, ModSettingDescriptor.Create("eMka.ModSettingsExamples.FloatSetting"));
 
       public ModSetting<string> StringSetting { get; } =
-        new("eMka.ModSettingsExamples.StringSetting", "default");
+        new("default", ModSettingDescriptor.Create("eMka.ModSettingsExamples.StringSetting"));
 
       public ModSetting<bool> BoolSetting { get; } =
-        new("eMka.ModSettingsExamples.BoolSetting", true);
+        new(true, ModSettingDescriptor.Create("eMka.ModSettingsExamples.BoolSetting"));
 
       public ModSettingOwnerMock(ISettings settings,
                                  ModSettingsOwnerRegistry modSettingsOwnerRegistry,
@@ -339,8 +341,8 @@ namespace Tests.ModSettings {
     private class IncorrectModSettingOwner : ModSettingsOwner {
 
       [UsedImplicitly]
-      public ModSetting<char> CharSetting { get; } = new("eMka.ModSettingsExamples.CharSetting",
-                                                         'a');
+      public ModSetting<char> CharSetting { get; } =
+        new('a', ModSettingDescriptor.Create("eMka.ModSettingsExamples.CharSetting"));
 
       public IncorrectModSettingOwner(ISettings settings,
                                       ModSettingsOwnerRegistry modSettingsOwnerRegistry,
@@ -369,7 +371,8 @@ namespace Tests.ModSettings {
 
     private class NonExistingModSettingOwner : ModSettingsOwner {
 
-      public ModSetting<int> IntSetting { get; } = new("eMka.ModSettingsExamples.IntSetting", 2);
+      public ModSetting<int> IntSetting { get; } =
+        new(2, ModSettingDescriptor.Create("eMka.ModSettingsExamples.IntSetting"));
 
       public NonExistingModSettingOwner(ISettings settings,
                                         ModSettingsOwnerRegistry modSettingsOwnerRegistry,
@@ -518,7 +521,8 @@ namespace Tests.ModSettings {
 
     private class InvalidModSetting : ModSetting<int> {
 
-      public InvalidModSetting(string locKey, int defaultValue) : base(locKey, defaultValue) {
+      public InvalidModSetting(int defaultValue, ModSettingDescriptor descriptor) : base(
+          defaultValue, descriptor) {
       }
 
       public override bool IsValid(ModSettingsOwner modSettingsOwner, ISettings settings,
