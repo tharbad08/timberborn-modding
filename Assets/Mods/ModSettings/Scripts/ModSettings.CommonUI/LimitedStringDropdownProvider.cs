@@ -18,18 +18,18 @@ namespace ModSettings.CommonUI {
     public static LimitedStringDropdownProvider Create(LimitedStringModSetting
                                                            limitedStringModSetting) {
       return new(limitedStringModSetting) {
-          Items = limitedStringModSetting.Values.Select(value => value.LocKey).ToList()
+          Items = limitedStringModSetting.Values.Select(value => value.Key).ToList()
       };
     }
 
     public string GetValue() {
       return _limitedStringModSetting.Values
-          .Single(value => value.Value == _limitedStringModSetting.Value).LocKey;
+          .Single(value => value.Value == _limitedStringModSetting.Value).Key;
     }
 
     public void SetValue(string value) {
       _limitedStringModSetting.SetValue(_limitedStringModSetting.Values
-                                            .Single(v => v.LocKey == value).Value);
+                                            .Single(v => v.Key == value).Value);
     }
 
     public string FormatDisplayText(string value) {
