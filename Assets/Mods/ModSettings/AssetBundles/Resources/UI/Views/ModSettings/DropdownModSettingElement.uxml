@@ -5,7 +5,7 @@
         <ui:VisualElement name="SettingWrapper" class="mod-setting__wrapper">
             <ui:Instance template="Descriptor" name="Descriptor" />
             <ui:VisualElement name="ScrollbarSpacer" class="mod-setting__scrollbar-spacer" />
-            <Timberborn.DropdownSystem.Dropdown name="Dropdown" class="settings-element settings-dropdown mod-setting__controls" />
+            <Timberborn.DropdownSystem.Dropdown name="Dropdown" class="settings-dropdown mod-setting__controls" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
