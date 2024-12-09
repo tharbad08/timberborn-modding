@@ -1,0 +1,8 @@
+{
+  "name": "ModSettings.GameUI",
+  "references": [
+    "ModSettings.Core"
+  ],
+  "autoReferenced": false,
+  "allowUnsafeCode": true
+}

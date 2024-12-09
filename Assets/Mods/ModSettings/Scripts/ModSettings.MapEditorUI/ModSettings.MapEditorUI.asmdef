@@ -1,0 +1,8 @@
+{
+  "name": "ModSettings.MapEditorUI",
+  "references": [
+    "ModSettings.Core"
+  ],
+  "autoReferenced": false,
+  "allowUnsafeCode": true
+}
