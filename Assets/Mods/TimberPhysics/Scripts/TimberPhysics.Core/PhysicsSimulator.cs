@@ -5,6 +5,7 @@ namespace TimberPhysics.Core {
   internal class PhysicsSimulator : IUpdatableSingleton {
 
     private static readonly float FixedDeltaTime = 0.02f;
+    private const int MaxSubstepsPerUpdate = 4;
     private readonly PhysicalObjectRegistry _physicalObjectRegistry;
     private float _timer;
 
@@ -16,10 +17,16 @@ namespace TimberPhysics.Core {
       if (Physics.simulationMode == SimulationMode.Script) {
         _timer += Time.deltaTime;
 
-        while (_timer >= FixedDeltaTime) {
+        var substeps = 0;
+        while (_timer >= FixedDeltaTime && substeps < MaxSubstepsPerUpdate) {
           _timer -= FixedDeltaTime;
           _physicalObjectRegistry.StepAll(FixedDeltaTime);
           Physics.Simulate(FixedDeltaTime);
+          substeps++;
+        }
+
+        if (_timer >= FixedDeltaTime) {
+          _timer %= FixedDeltaTime;
         }
       }
     }
