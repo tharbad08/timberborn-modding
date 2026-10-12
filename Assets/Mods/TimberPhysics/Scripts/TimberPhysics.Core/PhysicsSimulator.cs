@@ -4,7 +4,7 @@ using Timberborn.SingletonSystem;
 using UnityEngine;
 
 namespace TimberPhysics.Core {
-  internal class PhysicsSimulator : IUpdatableSingleton {
+  public class PhysicsSimulator : IUpdatableSingleton {
 
     private const float FixedDeltaTime = 0.02f;
     private const int MaxSubstepsPerUpdate = 4;
